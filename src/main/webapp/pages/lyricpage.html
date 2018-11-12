@@ -1,0 +1,89 @@
+<a href="javascript:;" class="logo" id="logodowon"><i class="iconfont icon-xialasanjiao-copy"></i></a>   
+<div class="mod_music">
+    <!-- 歌词内容区 -->
+    <div class="music_content">
+        <!-- music-img -->
+        <div class="music_content_left"><img id="image" src="https://y.gtimg.cn/music/photo_new/T002R300x300M000001IqAXi1RikWP.jpg?max_age=2592000" alt="歌曲图片" height="300" width="300"></div>
+        <!-- music geci -->
+        <div class="music_content_right">
+            <h1 class="music_header js_songname"></h1>
+            <div class="song_info_name">
+                <span>歌手:</span>
+                <a draggable="false"  href="javascript:;" class="js_songsonger"></a>
+            </div>
+            <div class="song_info_zj">
+                <span>专辑:</span>
+                <a href="javascript:;">ForMe+You</a>
+            </div>
+            <div class="song_info_gc js_lrc">
+            </div>
+        </div>
+    </div> 
+    <!-- 底部播放条 -->
+    <div class="music_footer">
+        <div class="music_fo_content">   
+            <!--上一首 暂停 下一首 -->
+            <a href="javascript:;" class="tuzi"><i class="iconfont icon-youbofang-copy-copy"></i></a>
+            <a href="javascript:;" class="tuzi js_lrcstop" style="top: 18px !important;"><i class="iconfont icon-xinzanting1"></i></a>
+            <a href="javascript:;" class="tuzi "><i class="iconfont icon-youbofang"></i></a>       
+            <div class="footer_top music_info">
+                <!-- 播放时间 -->
+                <div class="music_time">
+                    <div class="music_time_left">
+                        <span class="js_songname"></span>-
+                        <span class="js_songsonger"></span>
+                    </div>
+                    <div class="music_time_right">
+                        <span class="timeend">00:00</span>/<span class="timestar">00:00</span>   
+                    </div>        
+                </div>
+                <!-- 播放进度条 -->
+                <div class="lanren">
+                    <div class="process js_precess" id="js_playlrc">
+                        <a href="javascript:;" draggable="false" class="bg_value js_pre"  id="playPre_lrc"></a>
+                        <a href="javascript:;" draggable="false" class="bg_bar"></a>
+                        <a href="javascript:;" draggable="false" class="process_circle js_prevalue" id="playPrevalue_lrc" >
+                            <span id="playcicrl_lrc"></span>
+                        </a>
+                    </div>
+                </div>             
+            </div>
+            <div class="music_info">
+                <a href="javascript:;" class="tuzi js_changeMode"><i class="iconfont icon-shunxubofang" title="顺序播放"></i></a> 
+            </div>
+            <a href="javascript:;" class="js_loverfoot loverfooter"><i class="iconfont icon-aixinkong1"></i></a>
+            <a href="javascript:;" class="tuzi js_download"><i class="iconfont icon-xinxiazai"></i></a>   
+            <!-- <a href="javascript:;" class="zhunxin tuzi  js_zhunxin" ><i class="iconfont icon-zhunxintouming"></i></a>  -->
+            <div class="music_info sound">
+                <a href="javascript:;" class="tuzi js_metd"><i class="iconfont icon-xinyinliang"></i></a>
+                <!-- 音量滚动条 -->
+                <div class="lanren1">
+                    <div class="process1 js_precess_sound" id="soundPrecess_lrc">
+                        <a href="javascript:;" draggable="false" class="bg_value1 js_lrcsoundpre"  id="soundPre_lrc"></a>
+                        <a href="javascript:;" draggable="false" class="bg_bar1"></a>
+                        <a href="javascript:;" draggable="false" class="process_circle1 js_lrcsoundprevalue" id="soundPrevalue_lrc" >
+                            <span id="soundcicrl_lrc"></span>
+                        </a>
+                    </div>
+                </div> 
+            </div>   
+            <div class="music_info footer_right js_playerlan" >
+                <a href="javascript:;" class="tuzi" title="播放列栏"><i class="iconfont icon-xinbofangliebiao"></i><span class="music_num js_songtotle">0</span></a>        
+            </div>
+        </div>
+    </div>
+    <!-- 播放列栏  -->
+    <div class="player js_lrcp" style="display:none;">
+        <h2>播放列表</h2>
+        <div class="player_tool">
+            <div class="player_tool_num music_info"><span class="js_songtotle">0</span>首歌曲</div>
+        </div>
+        <div class="js_testscroll testscroll">
+            <ul class="player_list js_bofanglist js_songlistheader">
+                
+            </ul>            
+        </div>
+        <div class="lrc_loading"><img src="img/loading.gif" alt=""></div>
+        <div class="lrc_end"><p>没有数据可以加载啦♪(^∇^*)</p></div>
+    </div>            
+</div>   

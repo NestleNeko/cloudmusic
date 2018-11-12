@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>私有云音乐播放器</title>
+    <!-- logo -->
+    <link rel="shortcut icon" href="img/LOGO.png" type="image/x-icon">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <!-- 引入font -->
+    <!-- <link rel="stylesheet" href="font/iconfont.css"> -->
+    <!-- 引入外部css -->
+    <link rel="stylesheet" href="js/icheck-1.x/skins/all.css">
+    <!-- 导入jquery文件 -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- iCheck-1.x的复选框插件-->
+    <script src="js/icheck-1.x/icheck.min.js"></script>
+    <link rel="stylesheet" href="css/music.css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_845956_e6gmew3xp0c.css">
+    <style>
+        .bobo{position: absolute;top:100%;left: 0;}
+    </style>
+</head>
+<body>
+    <!-- home页面 -->
+    <div class="player_main" style="z-index:3" id="mainplayer">
+        <!-- 头部 -->
+        <div class="playernav_bar">       
+            <a class="playernav_bar_content" href="javascript:;" id="landingUser">登录</a>
+            <!-- 登录之后的模板 -->
+                <!-- <div class="js_landing">
+                    <img src="img/logo1.gif" alt="" width="30" height="30">  
+                    <a class="playernav_bar_content" href="javascript:;">退出</a>            
+                    <a class="playernav_bar_content"><i class="iconfont icon-touxiang"></i></a>                
+                </div> -->
+
+        </div> 
+        <!-- 内容区 -->
+        <div class="player_content">
+            <div class="palyercon_left">
+                <ul class="jsall_list">
+                    <li class="left_li">
+                        <a id="selectallmusic" href="#" onclick="selectallmusic()" class="js_leftlistall"><i class="iconfont icon-quanbu"></i><span>全部歌曲</span></a>
+                    </li>
+                    <li class="left_li">
+                        <a href="javascript:;"><i class="iconfont icon-lishi"></i><span>播放历史</span></a>
+                    </li>
+                    <li class="left_li">
+                        <a href="javascript:;"><i class="iconfont icon-aixinkong"></i><span>我喜欢</span></a>
+                    </li>
+                    <li class="left_li">
+                        <a href="javascript:;"><i class="iconfont icon-shoucang"></i><span>收藏</span></a>
+                    </li>
+                </ul>
+                <div class="hr"></div>
+                <div class="song_sheet">
+                    <span>我创建的歌单</span>
+                    <a href="javascript:;" class="f_r js_songsheet" draggable="false"><i class="iconfont icon-jiahaotianjia"></i></a>
+                </div>
+                <ul class="js_songlist songlist_main">
+                    <li class="left_li">
+                        <a href="javascript:;" draggable="false"><i class="iconfont icon-yinle" style="top:-1px;"></i><span class="js_value lestli_val">变身精致女孩化妆时听的歌</span></a>
+                        <div class="js_box leftli_box" style="display:none">
+                            <span class="js_leftlidelte"><i class="iconfont icon-lajitong"></i></span>
+                            <span class="js_leftedit"><i class="iconfont icon-qianbi"></i></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="palyercon_right">
+                <!-- 编辑区 -->
+                <div class="palyercon_right_tool">
+                    <a href="javascript:;" id="shangchuancopyban">
+                        <i class="iconfont icon-shangchuancopyban"></i>
+                        <span>上传歌曲</span>
+                    </a>
+                    <a href="javascript:;" class="palyercon_right_tool_add js_addto">
+                        <i class="iconfont icon-tianjia"></i>
+                        <span>添加到</span>
+                    </a>
+                    <a href="javascript:;" class="js_collect">
+                        <i class="iconfont icon-shoucang"></i>
+                        <span>收藏</span>
+                    </a>
+                    <a href="javascript:;" class="js_delete">
+                        <i class="iconfont icon-lajitong"></i>
+                        <span>删除</span>
+                    </a>
+                    <div class="search_music">
+                        <input type="text" class="js_searchInput" placeholder="搜索音乐">
+                        <i class="iconfont icon-fangdajing search_icon js_searchsongs"></i>
+                    </div>
+                </div>
+                <!-- 添加 -->
+                <div class="add_songer js_addtools" style="display:none;">
+                    <ul>
+                        <li><a href="javascript:;" class="js_mylover">我喜欢</a></li>
+                        <li><a href="javascript:;" class="js_collect">收藏</a></li>
+                        <div class="spacile_aa">添加到歌单</div>
+                        <li><a href="javascript:;" class="js_addsheet">歌单一</a></li>
+                    </ul>
+                </div>
+                <!-- 详细 -->
+                <!-- 播放列表 -->
+                <ul class="songlist_header js_songheader">
+                    <li class="js_Songcheck song_list_li songlist_header_list songlist_header_check"><input type="checkbox" id="allOptionId" value="all"/></li>
+                    <li class="songlist_header_list " style="width: 13px"></li>
+                    <li class="songlist_header_list songlist_header_song">歌曲</li>
+                    <li class="songlist_header_list songlist_header_person">歌手</li>
+                    <li class="songlist_header_list songlist_header_time">时长</li>
+                </ul> 
+                <div class="palyercon_right_list" id="songlist">
+                    <ul class="songlist_header js_songlistheader" id="js_idsonglist">
+                    </ul>
+                    <!-- loading图片 -->
+                    <div class="loading_img"><img src="img/loading.gif" alt=""></div>
+                    <!-- <div class="loading_end"><p>没有数据可以加载啦♪(^∇^*)</p></div> -->
+                </div>
+            </div>
+        </div>   
+        <!-- footer -->
+        <div class="music_footer" id="footerpage">
+                <div class="music_fo_content">
+                        <div class=" list_music_img " id="imgshow">
+                            <img class="f_l" src="https://y.gtimg.cn/music/photo_new/T002R300x300M000001IqAXi1RikWP.jpg?max_age=2592000" alt="歌曲图片" height="65" width="65">
+                            <a href="javascript:;" class="f_l tuzi"><i class="iconfont icon-xinzhankai"></i></a>
+                        </div>       
+                        <a href="javascript:;" class="music_leftsong tuzi"><i class="iconfont icon-youbofang-copy-copy"></i></a>
+                        <a href="javascript:;" class="tuzi js_footestop" style="top:18px;" data-index="1"><i class="iconfont icon-xinzanting1"></i></a>                   
+                        <a href="javascript:;" class="tuzi"><i class="iconfont icon-youbofang"></i></a>       
+                        <div class="list_footer_top music_info">
+                            <!-- 播放时间 -->
+                            <div class="music_time">
+                                <div class="music_time_left">
+                                    <span class="js_songname"></span>-
+                                    <span class="js_songsonger">（づ￣3￣）づ╭❤～</span>
+                                </div>
+                                <div class="music_time_right">
+                                    <span class="timeend">00:00</span>/<span class="timestar">00:00</span>  
+                                </div>        
+                            </div>
+                            <!-- 底部进度条 -->
+                            <!-- <div class="progress"><div class="progress_bar"></div><span class="progress_toll"></span></div>  -->
+                            <div class="lanren" id="lanrenpro">
+                                <div class="process js_foplayprecess" id="playPrecess_footer">
+                                    <a href="javascript:;" draggable="false" class="bg_value js_pre"  id="playPre_footer"></a>
+                                    <a href="javascript:;" draggable="false" class="bg_bar"></a>
+                                    <a href="javascript:;" draggable="false" class="process_circle js_prevalue"id="playPrevalue_footer" >
+                                        <span id="circlebox"></span>
+                                    </a>
+                                </div>
+                            </div>               
+                        </div>
+                        <div class="music_info">
+                            <div class="music_info">
+                                <a href="javascript:;" class="xuanze js_changeMode"><i class="iconfont icon-shunxubofang" title="顺序播放"></i></a>  
+                            </div>
+                            <div class="music_info">
+                                <a href="javascript:;" class="tuzi js_loverfoot"><i class="iconfont icon-aixinkong1"></i></a>
+                            </div>
+                            <a href="javascript:;" class="tuzi js_download"><i class="iconfont icon-xinxiazai"></i></a>   
+                            <!-- <a href="javascript:;" class="zhunxin tuzi  js_zhunxin" ><i class="iconfont icon-zhunxintouming"></i></a>   -->
+                            <div class="music_info sound">
+                                <a href="javascript:;" class="tuzi js_metd" ><i class="iconfont icon-xinyinliang"></i></a>
+                                <div class="lanren1">
+                                    <!-- 底部音量进度条 -->
+                                    <div class="process1  js_fosoundprecess" id="soundPrecess_footer">
+                                        <a href="javascript:;" draggable="false" class="bg_value1 js_fosoundpre"  id="soundPre_footer"></a>
+                                        <a href="javascript:;" draggable="false" class="bg_bar1"></a>
+                                        <a href="javascript:;" draggable="false" class="process_circle1  js_fosoundprevalue" id="soundPrevalue_footer" >
+                                            <span id="soundcicrl_footer"></span>
+                                        </a>
+                                    </div>
+                                </div> 
+                            </div> 
+                            <div class="music_info footer_right" id="playerlan">
+                                <a href="javascript:;" class="tuzi" title="播放列栏"><i class="iconfont icon-xinbofangliebiao"></i><span class="music_num js_songtotle">4</span></a>        
+                            </div>   
+                        </div>
+                    </div>
+        </div>
+        <!--弹框  -->
+        <div class="erro_frame" style="display:none">
+            <i class="iconfont icon-danchujinggao erro_frame_commond"></i>
+            <div class="erro_frame_commond">请选择操作的单曲</div>
+        </div>
+        <!-- 播放列栏  -->
+        <div class="player " id="player" style="display:none;">
+            <h2>播放列表</h2>
+            <div class="player_tool">
+                <div class="player_tool_num music_info"><span class="js_songtotle">0</span>首歌曲</div>
+            </div>
+            <div class="js_testscroll testscroll">
+                <ul class="player_list js_bofanglist js_songlistheader ">
+                    
+                </ul>            
+            </div>
+        </div>  
+    </div>
+    <!-- 弹框处理 -->
+    <div class="bombpromt js_bombpromt" style="display:none">
+        <img src="img/bombpromt.gif" alt="" height="100" style="padding-left:43px">
+        <p class="js_bombword">操作成功</p>
+    </div>
+    <!-- 歌词界面 -->
+    <div class="bobo" id="gecipage"></div>
+    <!-- 登陆页面 -->
+    <div class="commingpage" style="display:none" id="landingPage"></div>
+    <!-- 上传界面  -->
+    <div class="commingpage" id="uploadpage" style="display:none"></div>
+    <!-- 背景模糊 -->
+    <div class="bg-img-mask"></div>
+    <div class="bg-img"></div>
+    <script type="text/javascript" src="js/scroll.js"></script>
+    <script type="text/javascript" src="js/player.js"></script>
+    <script>
+        //load()方法页面加载
+        $("#gecipage").load("pages/lyricpage.html",function(){});
+        $("#landingPage").load("pages/loginpage.html");
+        $("#uploadpage").load("pages/uploadpage.html");
+        $("#footerpage").load("pages/footerpage.html",function(){});
+        // 列表加载
+        $(document).ready(function(){
+            let timeMark=true;
+            //播放
+            let play ={
+                arrsong: [],
+                init(){
+                    //播放停止切换
+                    
+                    this.muted();
+                    this.lover();
+                    this.showListContent();
+                    //双击播放
+                    this.showTollslist();
+                    //歌曲的删除
+                    this.deleteCheck();
+                    //添加到
+                    this.addSonger();
+                    //收藏
+                    this.collect();
+                    //添加到歌单
+                    this.addSongsheet();
+                    $(".js_value").attr('title',$(".js_value").text());
+                },
+                //显示三个工具栏
+                showListContent(){
+                    //1.LI鼠标onmousenter事件
+                        $(".js_songlistheader").on("mouseenter",".js_songli",function(){
+                            $(this).find(".js_listcontent").addClass("hover")
+                            if($(this).find(".js_listcontent").hasClass("hover")){
+                                $(this).find(".js_songtools").css("display","inline-block");      
+                            }
+                        }).on("mouseleave",".js_songli",function(){
+                            $(this).find(".js_listcontent").removeClass("hover");
+                            if($(this).find(".js_listcontent").hasClass("active") == false){
+                                $(this).find(".js_songtools").css("display","none");
+                            }
+                        });
+                    //2.Li鼠标点击选中事件  选中列表 移除鼠标事件
+                        $(".js_songlistheader").on("click",".js_songli",function(e){
+                            $(".js_lrctime").show();
+                            $(".js_songli").find(".js_listcontent").removeClass("active");
+                            if($(".js_songli").find(".js_listcontent").hasClass("active") == false){
+                                $(".js_songli").find(".js_songtools").css("display","none");
+                            }
+                            $(this).find(".js_listcontent").addClass("active")
+                            // var $this = this;
+                            if($(this).find(".js_listcontent").hasClass("active")){
+                                $(this).find(".js_songtools").css("display","inline-block");
+                                $(this).find(".js_lrctime").hide();
+                            }
+                            
+                        });
+                    //4.点击当前的操作下拉的功能实现  传递当前的歌曲id 在模板哪里添加data-id  通过$(this).data(id)
+                },
+                //显示工具栏中详细的列表
+                showTollslist(){
+                    //3.小圈圈点击事件 显示操作下拉
+                        $("html,body").on("click",function(e){
+                            if(!($(e.target).closest(".js_xiangxi").length>0 || $(e.target).closest(".js_xiangxixi").length>0)){
+                                $(".js_xiangxixi").hide();
+                                $(".js_songlistheader").on("mouseenter",".js_songli",function(){
+                                    $(this).find(".song_list_content").addClass("hover")
+                                    if($(this).find(".song_list_content").hasClass("hover")){
+                                        $(this).find(".song_list_content .songlist_header_song .js_songtools").css("display","inline-block");                        
+                                    }
+                                })
+                            }
+                        })
+                        $(".js_songlistheader").on("click",".js_xiangxi",function(e){
+                            $(this).find(".js_xiangxixi").toggle();
+                            $(".js_songlistheader").unbind("mouseenter");
+                        })
+                        $(".js_songlistheader").on("click",".js_xiangxixi",function(e){
+                            e.stopPropagation();
+                        })
+                    //添加到我喜欢
+                    var $this = this;
+                        $(".js_songlistheader").on("click",".js_mylover",function(e){
+                            $this.tip("喜欢人家干嘛(*/ω＼*)")
+                        })
+                    //添加到收藏
+                        $(".js_songlistheader").on("click",".js_mycollect",function(e){
+                            $this.tip("收藏好了o(*////▽////*)q")
+                        })
+                    //添加到歌单
+                        $(".js_songlistheader").on("click",".js_gedan",function(e){
+                            $this.tip("成功添加")
+                        })
+                },
+            //功能条
+                //添加到
+                addSonger(){
+                    var $this = this;
+                    $("html,body").on("click",function(e){
+                        if(!($(e.target).closest(".js_addto").length>0 || $(e.target).closest(".js_addtools").length>0)){
+                            $(".js_addtools").hide();
+                        }
+                    })
+                    //添加到 显示列表
+                    $(".js_addto").click(function(e){
+                        $("#xiangxixi").hide();
+                        $(".js_addtools").toggle() ;
+                        
+                    })  
+                    //添加LI上面的收藏功能    在模板哪里添加data-id  通过$(this).data(id)
+                    // $(".js_addcollection").click(function(){
+                    //     // var arr = []
+                    //     // if($("#js_idsonglist input:checkbox:checked")){
+                    //     //     // for(var i=0;i<$("#js_idsonglist input:checkbox:checked").length;i++){
+                    //     //     //     // arr.push($("#js_idsonglist input:checkbox:checked")[i]);
+                    //     //     // }
+                    //     // }
+                    //     if($("#js_idsonglist input:checkbox:checked")){
+                    //         // $("#js_idsonglist input:checkbox:checked").closest('li').remove()
+                    //         if($("#js_idsonglist input:checkbox:checked").length == 0){
+                    //             $this.tip("请选择歌曲操作啦(≧∇≦)ﾉ")
+                    //         }else{
+                    //             $this.tip("aiyo~收藏成功了耶♪(^∇^*)")
+                    //         }
+                    //     }
+                    // })
+                    //添加到我喜欢
+                    $(".js_mylover").click(function(){
+                        if($("#js_idsonglist input:checkbox:checked")){
+                            if($("#js_idsonglist input:checkbox:checked").length == 0){
+                                $this.tip("请选择歌曲操作啦(≧∇≦)ﾉ")
+                            }else{
+                                $this.tip("谢谢成为你的最爱♪(^∇^*)")
+                            }
+                        }
+                    })
+
+                    //添加到歌单     
+                },
+                //删除
+                deleteCheck(){
+                    var $this = this;
+                    //删除功能
+                    $(".js_delete").on("click",function(){
+                        if($("#js_idsonglist input:checkbox:checked")){
+                            if($("#js_idsonglist input:checkbox:checked").length == 0){
+                                $this.tip("请选择歌曲操作啦(≧∇≦)ﾉ")
+                            }else{
+                                $this.tip("删除啦♪(^∇^*)")
+                            }
+                        }
+                    })
+                },
+                //收藏 //添加LI上面的收藏功能    在模板哪里添加data-id  通过$(this).data(id)
+                collect(){
+                    var $this = this;
+                    $(".js_collect").on("click",function(){
+                        if($("#js_idsonglist input:checkbox:checked")){
+                            if($("#js_idsonglist input:checkbox:checked").length == 0){
+                                $this.tip("请选择歌曲操作啦(≧∇≦)ﾉ")
+                            }else{
+                                $this.tip("收藏成功啦♪(^∇^*)")
+                            }
+                        }
+                    })
+                },
+                //添加到歌单
+                addSongsheet(){
+                    var $this = this;
+                    $(".js_addsheet").on("click",function(){
+                        if($("#js_idsonglist input:checkbox:checked")){
+                            // $("#js_idsonglist input:checkbox:checked").closest('li').remove()
+                            if($("#js_idsonglist input:checkbox:checked").length == 0){
+                                $this.tip("请选择歌曲操作啦(≧∇≦)ﾉ")
+                            }else{
+                                $this.tip("添加成功啦♪(^∇^*)")
+                            }
+                        }
+                    })
+                },
+                //提示框
+                tip(text){
+                    var bomb = $(".js_bombword").html(text);
+                    $(".js_bombpromt").fadeIn().stop(true,true);
+                    setTimeout(function(e){
+                        $(".js_bombpromt").fadeOut();
+                    },3000);
+                },
+            
+                //静音切换  
+                muted(){
+                    $(".js_metd").click(function(){
+                        if($(this).find('i').hasClass("icon-xinyinliang")){
+                            $(this).find('i').removeClass("icon-xinyinliang").addClass("icon-yinliang");
+                            playerMusic.stopVolome();  
+                        } else {
+                            $(this).find('i').removeClass("icon-yinliang").addClass("icon-xinyinliang");
+                            playerMusic.stopVolome();  
+                        }
+                    })
+                },
+                //喜欢
+                lover(){
+                    var $this = this;
+                    $(".js_songlistheader").on("click",".js_lover",function(e){
+                        var index = $(".js_footestop").data("index");
+                        if($(this).find('i').hasClass("icon-aixinkong1")){
+                            $(this).find('i').removeClass("icon-aixinkong1").addClass("icon-aixin1").css("color","rgba(247, 59, 59, 0.8)");
+                            if($(this).parent().parent().find(".js_stop i").hasClass("icon-xinzanting")){
+                                $(".js_loverfoot").find("i").removeClass("icon-aixinkong1").addClass("icon-aixin1").css("color","rgba(247, 59, 59, 0.8)")
+                                $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_lover i").removeClass("icon-aixinkong1").addClass("icon-aixin1").css("color","rgba(247, 59, 59, 0.8)")
+                            }
+                            $this.tip("成功添加到mylove(￣▽￣)~*")
+                        }else{
+                            $(this).find('i').removeClass("icon-aixin1").addClass("icon-aixinkong1 ").css("color","#c3c3c3");
+                            $(".js_loverfoot").find("i").removeClass("icon-aixin1").addClass("icon-aixinkong1").css("color","#c3c3c3")
+                            $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_lover i").removeClass("icon-aixin1").addClass("icon-aixinkong1").css("color","#c3c3c3")
+
+                            $this.tip("谢谢你曾经喜欢过我ಠ╭╮ಠ")
+                        }
+                    })
+                    $(".js_lover").find('i').hasClass("icon-aixinkong1");
+                    $(".js_loverfoot").on("click",function(){
+                       var index = $(".js_footestop").data("index");
+                       if($(this).find('i').hasClass("icon-aixinkong1")){
+                            $(".js_loverfoot").find("i").removeClass("icon-aixinkong1").addClass("icon-aixin1").css("color","rgba(247, 59, 59, 0.8)")
+                            $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_lover i").removeClass("icon-aixinkong1").addClass("icon-aixin1").css("color","rgba(247, 59, 59, 0.8)")
+                            $this.tip("成功添加到mylove(￣▽￣)~*")
+                        }else{
+                            $(".js_loverfoot").find("i").removeClass("icon-aixinkong1").addClass("icon-aixinkong1 ").css("color","#c3c3c3");
+                            $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_lover i").removeClass("icon-aixin1").addClass("icon-aixinkong1").css("color","#c3c3c3")
+                            $this.tip("谢谢你曾经喜欢过我ಠ╭╮ಠ")
+                        }
+                       
+                    })
+                },
+            }
+            play.init();
+            //底部功能
+            let footerPlay = {
+                init(){
+                    playerMusic.playIndex(function(){
+                        $(".js_footestop").data("index",this.num);
+                    });
+                    
+                    this.changeMode();
+                },
+
+                //歌曲模式切换
+                changeMode(){
+                    $(".js_changeMode").click(function(){
+                        if($(".js_changeMode").find("i").hasClass("icon-shunxubofang")){
+                            //单曲循环
+                            $(".js_changeMode").find("i").removeClass("icon-shunxubofang").addClass("icon-danquxunhuan");
+                            playerMusic.playModel="singleLoop"
+                            console.log("单曲循环")
+                        }else if($(".js_changeMode").find("i").hasClass("icon-danquxunhuan")){
+                            //随机播放
+                            $(".js_changeMode").find("i").removeClass("icon-danquxunhuan").addClass("icon-suijibofang");
+                            playerMusic.playModel="randomLoop"
+                            console.log("随机播放")
+                        }else if($(".js_changeMode").find("i").hasClass("icon-suijibofang")){
+                            //循环列表
+                            $(".js_changeMode").find("i").removeClass("icon-suijibofang").addClass("icon-liebiaoxunhuan");
+                            playerMusic.playModel="listLoop"
+                            console.log("列表循环")
+                        }else {
+                            //顺序播放
+                            playerMusic.playModel="shunxunLoop"
+                            $(".js_changeMode").find("i").removeClass("icon-liebiaoxunhuan").addClass("icon-shunxubofang");
+                            console.log("顺序播放")
+                        }
+                    })   
+                },
+                //时间
+               
+            };
+            footerPlay.init()
+            //左侧列表栏
+            let leftList = {
+                init(){
+                    //创建新的歌单
+                    this.addSonesheet();
+                    //左侧列表样式
+                    this.leftlist();
+                    //编辑
+                    this.editLeftlist();
+                    //显示
+                    this.show();
+                },
+                //创建新的歌单
+                addSonesheet(){
+                        var mark = true;
+                        $("html,body").on("click",function(e){
+                            if(!($(e.target).closest(".left_li.focus").length>0 || $(e.target).closest(".js_songsheet").length>0)){
+                                var html1 = `
+                                        <a href="javascript:;" class="js_testhtml"  draggable="false"> <i class="iconfont icon-yinle"  style="top:-1px;"></i><span class="js_value lestli_val"></span></a>
+                                        <div class="js_box leftli_box" style="display:none">
+                                            <span class="js_leftlidelte"><i class="iconfont icon-lajitong"></i></span>
+                                            <span class="js_leftedit"><i class="iconfont icon-qianbi"></i></span>
+                                        </div>
+                                    `
+                                var val = $(".js_songlist li:last").find("input").val();
+                                $(".js_songlist li:last").find(".js_input").replaceWith(html1);;
+                                $(".js_songlist li:last").find(".js_value").html(val);
+                            }
+                        })
+                        $(".js_songsheet").click(function(){
+                            if(mark){
+                                var html = `
+                                <li class="left_li">
+                                    <input type="text" class="js_input" autofocus/>
+                                </li>
+                                `
+                                var ulDoms = document.getElementsByClassName("js_songlist");
+                                var a = $(".js_songlist").append(html);
+                                mark = false;
+                                document.onkeydown = function(e){
+                                    var html1 = `
+                                        <a href="javascript:;" class="js_testhtml"  draggable="false"> <i class="iconfont icon-yinle"  style="top:-1px;"></i><span class="js_value lestli_val"></span></a>
+                                        <div class="js_box leftli_box" style="display:none">
+                                            <span class="js_leftlidelte"><i class="iconfont icon-lajitong"></i></span>
+                                            <span class="js_leftedit"><i class="iconfont icon-qianbi"></i></span>
+                                        </div>
+                                    `
+                                    if(e.keyCode == 13) {
+                                        var val = $(".js_songlist li:last").find("input").val();
+                                        $(".js_songlist li:last").find(".js_input").replaceWith(html1);;
+                                        $(".js_songlist li:last").find(".js_value").html(val);
+                                        mark = true;
+                                    }
+                                }
+                            }
+                        })
+                    },
+                //左侧列表
+                leftlist(){
+                    $(".jsall_list").on("click",".left_li",function(){
+                        if($(".left_li").hasClass("focus")){
+                            $(".left_li").removeClass("focus")
+                        }
+                        $(this).addClass("focus")
+                    })
+                    $(".jsall_list").on("click",".left_li",function(e){
+                        e.stopPropagation();
+                    })
+                    //歌单
+                    $(".js_songlist").on("click",".left_li",function(){
+                        if($(".left_li").hasClass("focus")){
+                            $(".left_li").removeClass("focus")
+                        }
+                        $(this).addClass("focus")
+                    })
+                    $(".js_gedan").on("click",".left_li",function(e){
+                        e.stopPropagation();
+                    });
+                    
+                },
+                //删除编辑列表
+                editLeftlist(){
+                    //编辑
+                    var sothis = this;
+                    $(".js_songlist").on("click",".js_leftlidelte",function(){
+                        if(confirm("确定删除嘛？")){
+                            $(this).closest("li").remove();
+                            play.tip("删除成功(*/ω＼*)")
+                        }else{
+                            play.tip("操作失败")
+                        }
+                    });
+                    $(".js_songlist").on("click",".js_leftedit",function(){
+                        $(".js_songlist").unbind("mouseenter");
+                        $(this).parent().hide();
+                        var val = $(this).parent().parent().find(".js_value").text()
+                        var html = `<input type="text" class="js_input" value="${val}" autofocus="autofocus">`
+                        $(this).parent().parent().find(".js_value").replaceWith(html);
+                        var $this = this;
+                        document.onkeydown = function(e){
+                            sothis.show();
+                            var html1 = `<span class="js_value lestli_val"></span>`
+                            if(e.keyCode == 13) {
+                                $(".js_songlist").bind("mouseenter");
+                                var val = $($this).parent().parent().find(".js_input").val();
+                                $($this).parent().parent().find(".js_input").replaceWith(html1);
+                                $($this).parent().parent().find(".js_value").html(val);
+                            }
+                        }
+                    })
+                    
+                },
+                //显示编辑菜单
+                show(){
+                    //右键点击弹出菜单
+                    $(".js_songlist").on("mouseenter",".left_li",function(e){
+                        $(this).find(".js_box").show();
+                    }).on("mouseleave",".left_li",function(e){
+                        $(".js_box").hide();
+                    });
+                    $(".js_songlist").on("mouseenter",".left_li",function(e){
+                            e.stopPropagation();
+                    })
+                }
+            }
+            leftList.init();
+            //隐藏显示功能
+            let showHide = {
+                init(){
+                    //显示歌词页面
+                    this.showLyripage();
+                    //显示隐藏登录页面
+                    this.showlandingPage();
+                    //显示隐藏上传页面
+                    this.showshagnchuanPage();
+                    //显示播放列表
+                    this.showlistSong();
+                },
+            //显示隐藏操作
+                //显示歌词页面
+                showLyripage(){
+                    $("#imgshow").click(function(){
+                    // $("#gecipage").css({"top":"0"}).fadeIn("4000");
+                    $("#gecipage").css({"display":"block"}).animate({
+                        "top":"0",
+                        
+                    },500)
+                    $("#mainplayer").hide()
+                    })
+                    $("#logodowon").click(function(){
+                        // $("#gecipage").css({"top":"100px"}).fadeOut("4000");
+                        $("#gecipage").animate({
+                            "top":"100%",         
+                        },500).css({"display":"none"})
+                        $("#mainplayer").show();
+                    });
+                },
+                //显示隐藏登录页面
+                showlandingPage(){
+                    $("#landingUser").click(function(){
+                        $("#landingPage").show();
+                    });
+                    $(".landing_title").click(function(){
+                        $("#landingPage").hide();
+                    });
+                },
+                //显示隐藏上传页面
+                showshagnchuanPage(){
+                    $("#shangchuancopyban").click(function(){
+                        $("#uploadpage").show();
+                    });
+                    $("#upload").click(function(){
+                        $("#uploadpage").hide();
+                    });
+
+                },
+                //显示播放列表
+                showlistSong(){
+                    $("#playerlan").click(function(e){
+                        if($("#player").css("display") == "none") {
+                            $("#player").css({"display":"inline-block"}).animate({
+                                "right":-80
+                            },"fast");                    
+                        } else {
+                            $("#player").css({"display":"none"}).fadeOut().css({"right":"-50%"});
+                        };
+                        e.stopPropagation();
+                    });
+                    $(".js_playerlan").click(function(e){
+                        if($(".js_lrcp").css("display") == "none") {
+                            $(".js_lrcp").css({"display":"inline-block"}).animate({
+                                "right":-80
+                            },"fast");                    
+                        } else {
+                            $(".js_lrcp").css({"display":"none"}).fadeOut().css({"right":"-50%"});
+                        };
+                        e.stopPropagation();
+                    });
+            
+                }
+            }
+            showHide.init();
+            //上传文件
+            let uploadFile = {
+                init(){
+                    this.fileUpload();
+                },
+                //上传文件按钮
+                fileUpload(){
+                    var y ;
+                    var $this = this;
+                    $(".js_fileinput").change(function(){
+                        $(this).data("file",null);
+                        y = $(".js_fileinput").prop('files');
+                        y =Array.from(y)
+                        var len = y.length;
+                        var arrFile = [];
+                        var html = '';
+                        for(var i=0;i<len;i++){
+                            // arrFile.push(y[i].name);
+                            $(".js_filename").text(html);
+                        //字符串截取  Slice(start,end)如果start的值是一个负数的，那么开始位置等于：lenght+start，同理end如果是负数的话就是:length+end
+                            var songName = y[i].name;
+                            var test1 = songName.slice(-4);
+                            //将字节转换为MB 
+                            html += `
+                                <li>
+                                    <span>${y[i].name.split(".")[0]}</span>
+                                    /* <span>${(y[i].size /(1024 * 1024)).toFixed(2)}MB</span> */
+                                    <span>${y[i].name.slice(-4)}</span>
+                                    <span class="js_delteupload" data-name="${y[i].name}">删除</span>
+                                </li>
+                            `
+                        }
+                        if(y.length == 1){
+                            $(".js_filename").text(y[0].name);
+                        }else if(y.length == 0){
+                            $(".js_filename").text("未选择文件");
+                        } else {
+                            $(".js_filename").text(len +"个文件");
+                        }
+                        $(".js_uplist").html(html);
+                    });
+                    //删除功能
+                    $(".js_uplist").on("click",".js_delteupload",function(){
+                            for(var i=0;i<y.length;i++){
+                                if($(this).data("name") == y[i].name){
+                                    y.splice(i,1);
+                                    $(this).parent().remove();
+                                    $(".js_uploadtip").text("删除成功").fadeIn();
+                                    if(y.length == 1){
+                                        $(".js_filename").text(y[i].name);
+                                    }else if(y.length == 0){
+                                        $(".js_filename").text("未选择文件");
+                                    } else {
+                                        $(".js_filename").html(y.length +"个文件");
+                                    }
+                                    setTimeout(function(){
+                                        $(".js_uploadtip").fadeOut();
+                                    },2000);
+                                }
+                            }
+                            $(".js_fileinput").data("file",y);
+                            
+                        })
+                    //上传
+                    $(".footer_buttom").on("click",".js_uploading",function(){
+                    })
+                },
+            }                         
+            uploadFile.init(); 
+            //登录注册
+            let submitDesiger = {
+                init() {
+                    this.changePage()
+                },
+                //登录注册页面切换
+                changePage(){
+                    $(".js_submit_desiger").click(function(){
+                        $(".js_desiger").fadeIn();
+                    })
+                    $(".js_submit_back").click(function(){
+                        $(".js_desiger").fadeOut();
+                    })
+                }
+            };
+            submitDesiger.init();
+            //拖拽
+            let drag = {
+                init(){
+                    //底部播放器
+                    var $this = this;
+                    var dragpre;
+                    var pre = document.getElementById("playPrecess_footer").offsetWidth - 12;
+                    var volumeText;
+                    //歌词页面
+                        //歌词页面进度条拖拽
+                            new scrollDom("playPre_lrc","playPrevalue_lrc","js_playlrc").init(function(a){
+                                timeMark = false;
+                                var timeval = $this.changeTime($(".timestar").html());	
+                                var x = parseInt(a.x);
+                                dragpre = $this.formateTime((timeval*x)/pre);
+                                $(".timeend").html($this.formateTime((timeval*x)/pre))
+                            },function(a){
+                                timeMark = true;
+                                $(".js_pre").css("width",a.x);
+                                $(".js_prevalue").css("left",a.y);
+                                playerMusic.perTest($this.changeTime(dragpre))
+                            })
+                            
+                        //歌词页面音量拖拽
+                            new scrollDom("soundPre_lrc","soundPrevalue_lrc","soundPrecess_lrc").init(function(a){
+                                $(".js_fosoundpre").css("width",a.x);
+                                $(".js_fosoundprevalue").css("left",a.y);
+                                var t = Math.floor($(".js_precess_sound").width()-11)
+                                volumeText = (parseInt(a.x)/t)
+                                playerMusic.soundCountrol(volumeText)
+                            },function(a){
+                                $(".js_fosoundpre").css("width",a.x);
+                                $(".js_fosoundprevalue").css("left",a.y);
+                                $(".icon-yinliang").removeClass("icon-yinliang").addClass("icon-xinyinliang");
+                                if(volumeText >1){
+                                    volumeText =1;
+                                }
+                                playerMusic.soundCountrol(volumeText);
+                            });
+                            
+                    //播放页面
+                        //播放页面进度条拖拽
+                        new scrollDom("playPre_footer","playPrevalue_footer","playPrecess_footer").init(function(a){
+                            timeMark = false;
+                            var timeval = $this.changeTime($(".timestar").html());	
+                            var x = parseInt(a.x);
+                            dragpre = $this.formateTime((timeval*x)/pre);
+                            $(".timeend").html($this.formateTime((timeval*x)/pre))
+                        },function(a){
+                            timeMark = true;
+                            $(".js_pre").css("width",a.x);
+                            $(".js_prevalue").css("left",a.y);
+                            playerMusic.perTest($this.changeTime(dragpre))
+                        })
+                        //播放页面音量拖拽
+                        new scrollDom("soundPre_footer","soundPrevalue_footer","soundPrecess_footer").init(function(a){
+                            $(".js_lrcsoundpre").css("width",a.x);
+                            $(".js_lrcsoundprevalue").css("left",a.y);
+                            var t = Math.floor($(".js_fosoundprecess").width()-11)
+                            volumeText = (parseInt(a.x)/t)
+                            playerMusic.soundCountrol(volumeText)
+                        },function(a){
+                            $(".js_lrcsoundpre").css("width",a.x);
+                            $(".js_lrcsoundprevalue").css("left",a.y);
+                            $(".icon-yinliang").removeClass("icon-yinliang").addClass("icon-xinyinliang");
+                            if(volumeText >1){
+                                volumeText =1;
+                            }
+                            playerMusic.soundCountrol(volumeText);
+                        });
+
+                    
+                },
+                formateTime: function(time) {
+                    var m = parseInt(time / 60);
+                    var s = parseInt(time % 60);
+                    var time = (m<10?("0"+m):m)+":"+(s<10?("0"+s):s);
+                    return time;
+                },
+                changeTime: function(val) {
+                    var m = val.split(":");
+                    var s = parseInt(m[0] * 60);
+                    var mm = parseInt(m[1] * 1);
+                    var time = s+mm;
+                    return time;
+                },
+            };
+            drag.init();
+
+            //右侧列表栏  对应的ajax
+            let ajaxInfo = {
+                mark:true,
+                songArrTotal:[],
+                songLrcContent: [],
+                saerchDoms:[],
+                songArr :[
+                    {
+                        id: "gfhgfhgfhg",
+                        name: "玫瑰花的葬礼",
+                        src: "musicfile/许嵩 - 玫瑰花的葬礼.mp3",
+                        autor: "许嵩",
+                        lrcSrc: "",
+                        time:"10:10",
+                        key:"[ti:玫瑰花的葬礼][ar:许嵩][al:Vae新歌 精选珍藏合辑][by:][offset:0][00:00.00]玫瑰花的葬礼 - 许嵩 (Vae Xu)[00:00.74]词：许嵩[00:00.88]曲：李毅杰[00:01.34]编曲：李毅杰[00:02.32][00:27.01]离开你一百个星期[00:28.72]我回到了这里[00:29.70]寻找我们爱过的证据[00:32.13]没有人愿意提起[00:33.53]玫瑰花它的过去[00:35.03]今天这里的主题[00:36.42]我把它叫作回忆[00:37.95]我知道[00:38.71]爱情这东西[00:39.84]它没什么道理[00:40.90]过去我和你在一起[00:42.65]是我太叛逆[00:43.82]现在只剩我自己[00:45.69]偷偷的想你[00:48.10][00:49.33]玫瑰花的葬礼[00:52.02]埋葬关于你的回忆[00:54.65][00:55.40]感觉双手麻痹[00:57.51]不能自已[00:58.95]已拉不住你[01:01.12]真的好美丽[01:03.67]那天的烟花雨[01:06.42][01:06.93]我说要娶穿碎花洋裙的你[01:11.21][01:12.78]玫瑰花的葬礼[01:15.42]埋葬深深爱着的你[01:18.12][01:18.74]残朵停止呼吸[01:20.93]渗入大地[01:22.40]没人会注意[01:24.03][01:24.58]一片小雨滴[01:27.09]陪着我等天明[01:29.85][01:30.46]我用这最后一分钟怀念你[01:34.83][01:37.21]我在夜幕笼罩的天桥上潜行[01:40.03]每一级阶梯[01:40.99]都留着你我昔日印迹[01:42.55][01:43.12]温存迷[01:44.41]吵闹清醒[01:45.32]都还在我的脚畔[01:46.59]兜兜兜兜兜转不清[01:48.23]没来得及把红色玫瑰递给你[01:50.55]爱就像是一场雨[01:52.04]已经离我而去[01:53.37]你说过[01:54.09]太过鲜艳的爱情[01:56.35]终将凋零[01:58.32][01:59.54]玫瑰花的葬礼[02:02.28]埋葬关于你的回忆[02:04.89][02:05.40]感觉双手麻痹[02:08.03]不能自已[02:09.22]已拉不住你[02:11.38]真的好美丽[02:13.96]那天的烟花雨[02:16.70][02:17.31]我说要娶穿碎花洋裙的你[02:21.36][02:22.85]玫瑰花的葬礼[02:25.87]埋葬深深爱着的你[02:28.30][02:28.95]残朵停止呼吸[02:31.21]渗入大地[02:32.67]没人会注意[02:34.76]一片小雨滴[02:37.40]陪着我等天明[02:40.13][02:40.77]我用这最后一分钟怀念你[02:45.29][02:46.68]总是回想过去[02:48.84]埋怨我自己[02:50.77] [02:52.57]总是不经意间[02:54.62]想起了[02:56.73][02:58.34]现在的你[02:59.51]已经太遥不可及[03:02.44][03:04.15]只能留在我记忆[03:09.07][03:09.95]玫瑰花的葬礼[03:12.53]埋葬关于你的回忆[03:15.08][03:15.75]感觉双手麻痹[03:18.04]不能自已[03:19.43]已拉不住你[03:21.62]真的好美丽[03:24.20]那天的烟花雨[03:26.94][03:27.52]我说要娶穿碎花洋裙的你[03:32.04][03:33.21]玫瑰花的葬礼[03:35.91]埋葬深深爱着的你[03:38.56][03:39.15]残朵停止呼吸[03:41.40]渗入大地[03:42.87]没人会注意[03:44.48][03:45.00]一片小雨滴[03:47.69]陪着我等天明[03:50.36][03:50.89]我用这最后一分钟怀念你[03:55.18][03:56.59]我用这最后一分钟"},
+                    {
+                        id: "dhgjghi",
+                        name: "花的微笑(新曲)",
+                        src: "musicfile/石进 - 花的微笑(新曲).mp3",
+                        autor: "石进",
+                        lrcSrc: "",
+                        time:"10:10"
+                    },
+                    {
+                        id: "lkjljklkj;",
+                        name: "默契",
+                        src: "musicfile/伦桑 - 默契.mp3",
+                        autor: "伦桑",
+                        lrcSrc: "",
+                        time:"10:10"
+                    },
+                    {
+                        id: "hfghgfh",
+                        name: "后来的我们（Cover：五月天）",
+                        src: "musicfile/二嘉 - 后来的我们（Cover：五月天）.mp3",
+                        autor: "二嘉",
+                        lrcSrc: "",
+                        time:"10:10"
+                    },
+                    {
+                        id: "kjhkjhk",
+                        name: "lost my pieces)",
+                        src: "musicfile/sɨve - lost my pieces.mp3",
+                        autor: "sɨve",
+                        lrcSrc: "",
+                        time:"10:10"
+                    },
+                    {
+                        id: "wrewtreytu",
+                        name: "夜的钢琴曲五",
+                        src: "musicfile/石进 - 夜的钢琴曲五.mp3",
+                        autor: "石进",
+                        lrcSrc: "",
+                        time:"10:10"
+                    },
+                    {
+                        id: "wrsadasdau",
+                        name: "夜的钢琴曲一",
+                        src: "musicfile/石进 - 夜的钢琴曲一.mp3",
+                        autor: "石进",
+                        lrcSrc: "",
+                        time:"10:10"
+                    },
+                    {
+                        id: "wrsadasdau",
+                        name: "Right Now (Na Na Na)",
+                        src: "musicfile/Am1r - Right Now (Na Na Na).mp3",
+                        autor: "Am1r",
+                        lrcSrc: "",
+                        time:"10:10"
+                    },
+                    {
+                        id: "wrsadasdau",
+                        name: "陪你度过漫长岁月",
+                        src: "musicfile/陪你度过漫长岁月-陈奕迅.mp3",
+                        autor: "陈奕迅",
+                        lrcSrc: "",
+                        time:"10:10"
+                    }
+                ],
+                init(){
+                    let $this  =this;
+                    //右侧列表显示
+                    this.loadDate(this.songArr);
+                    //歌词页面列表加载
+                    this.lrcloadDate(this.songArr);
+                    //解析歌词
+                    this.lrc(0);
+                    //加载歌曲信息
+                    this.initFootPlayer(0)
+                    //歌词高亮
+                    this.timeInit();
+                    //全选
+                    this.checkSong();
+                    //上一首 下一首
+                    this.prPrev();
+                    this.next();
+                    //搜索
+                    this.togglePlay();
+                    this.doublePlayer();
+                    this.stopPlay();
+                    this.searchInfo();
+                    playerMusic.playEndBack = function(index){
+                        //加载歌曲信息
+                        $this.initFootPlayer(index)
+                        //加载歌词
+                        $this.lrc(index);
+                        $this.changeIcon(index,"play");
+                        $(".js_footestop").data("index",index);
+                    }
+                },
+                initFootPlayer(index){
+                    $(".js_songname").text(this.songArr[index].name);
+                    $(".js_songsonger").text(this.songArr[index].autor);
+                    $(".timestar").text(this.songArr[index].time);
+                },
+                // 列表歌曲数据显示 传入相应的数组
+                loadDate(addsongArr){
+                    //ajax
+                    /*
+                        id: "1",
+                        name: "歌曲名",
+                        src: "歌曲文件地址",
+                        autor: "歌手",
+                        lrcSrc: "歌词",
+                        time:"10:10"
+                    */
+                    var $this = this;
+                    var arrSrc = [];
+                    var arSong = [];
+                    
+                    var numTotal = addsongArr.length;
+                    $(".js_songtotle").html(numTotal);
+                    $(".loading_img").show();
+                    //异步处理
+                    //请求成功加载到总的音乐数组中
+                    //这里的this.songArr充当请求回来的数据
+                    setTimeout(function(){
+                        $(".loading_img").hide();
+                        var html ="";
+                        for(var i = 0,len= addsongArr.length; i<len;i++){
+                            html+= `
+                            <li class="song_list js_songli" data-songid="${addsongArr[i].id}" data-index="${i}">
+                                <div class="song_list_content js_listcontent">
+                                    <div class="songlist_header_list songlist_header_check song_list_li song_cursor"><input type="checkbox" name="test" /></div>
+                                    <div class="songlist_header_list songlist_img"><img src="img/player-list.png" alt="" height="15" style="position: relative;top: 1px;display:none;" class="js_samllimgstop">
+                                    <img src="img/player-list.gif" alt="" height="15" style="position: relative;top: 1px;display:none;" class="js_samllimg"></div>
+                                    <div class="songlist_header_list songlist_header_song song_cursor">
+                                        <span class="listnum js_listnum">${i+1}</span>
+                                        <span class="js_listname">${ addsongArr[i].name}</span>
+                                        <div class="songer_tools js_songtools">
+                                            <a href="javascript:;" class="js_lover conyop" data-id="${addsongArr[i].id}"><i class="iconfont icon-aixinkong1"></i></a>
+                                            <a href="javascript:;" class="tuzi js_stop conyop"><i class="iconfont icon-xinzanting1"></i></a> 
+                                            <a href="javascript:;" class="js_xiangxi " >
+                                                <i class="iconfont icon-gongneng" style="font-size: 20px;"></i>
+                                                <div class="xiangxi js_xiangxixi">
+                                                    <ul>
+                                                        <li class="js_mylover">我喜欢</li>
+                                                        <li class="js_mycollect">收藏</li>
+                                                        <div class="spacile_aa">添加到歌单</div>
+                                                        <ul class="js_gedanda">
+                                                            <li class="js_gedan">歌单一</li>
+                                                        </ul>
+                                                    </ul>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="songlist_header_list songlist_header_person song_cursor js_autor">${ addsongArr[i].autor}</div>
+                                    <div class="songlist_header_list songlist_header_time js_time" id="">${addsongArr[i].time}</div>
+                                </div> 
+                            </li>
+                            `;
+                        }
+                        $(".js_songlistheader").html(html);
+                        //存储搜索所需要的lidoms
+                        $this.saerchDoms = Array.from($("#js_idsonglist").find(".js_songli"))
+                        addsongArr.map(m=>{
+                           arrSrc.push(m.src);
+                        });
+                        playerMusic.addMusic(arrSrc);
+                        $('input').iCheck('destroy');
+                        $('input').iCheck({
+                            checkboxClass: 'icheckbox_square-pink',
+                            radioClass: 'iradio_square-pink',
+                        });
+                    },2000)
+                },
+                //搜索 模糊查找
+                searchInfo(){
+                    var $this = this;
+                    $(".js_searchInput").on("input",function(){
+                        let val  = $(this).val();
+                        let findDoms = $this.saerchDoms.filter(function(dom,index){
+                            if($(dom).find(".js_listname").text().indexOf(val)!=-1){
+                                return dom;
+                            }
+                        })
+                        console.log(findDoms.length)
+                        if(findDoms.length>0){
+                            $("#js_idsonglist").find(".js_songli").remove();
+                            $("#js_idsonglist").append(findDoms)
+                        }
+
+                    })
+
+
+                    // $(".js_searchsongs").click(function(){
+                    //     var valInput = $(".js_searchInput").val();
+                    //     var searchArr = [];
+                    //     let 
+                    //     var reg = new RegExp(valInput);
+                    //     searchArr = $this.songArr.filter(function(val){
+                    //         var songsName = val.name;
+                    //         var resultArr = songsName.match(reg);
+                    //         return resultArr;
+                    //     })
+                    //     $this.loadDate(searchArr)
+                    // })
+                    // $(".js_searchInput").bind("input propertychange",function(){
+                    //     $(".js_searchsongs").trigger("click")
+                    // })
+                },
+                //checkbox的选择
+                checkSong(){
+                    $(".js_Songcheck").on("ifChecked","#allOptionId",function(e){
+                        $('input').iCheck('check');
+                    })
+                    $(".js_Songcheck").on("ifUnchecked","#allOptionId",function(e){
+                        $('input').iCheck('uncheck');
+                    })
+                },
+                //歌词页面播放列表
+                lrcloadDate(lrcsongArr){
+                    var $this = this;
+                    var lrcarrSrc = [];
+                    var lrcarSong = [];
+                    setTimeout(function(){
+                        var lrchtml = "";
+                        for(var i=0,len=lrcsongArr.length;i<len;i++){
+                            lrchtml += `
+                            <li class="player_list_li js_songli js_songlismall  js_songlismalltest"  data-index="${i}">
+                                <div class="js_listcontent js_listnum" style="position: relative";>
+                                    <img src="img/player-list.png" alt="" height="15" style="position: absolute;top:0px;left: -7px;display:none;" class="js_samllimgstop">
+                                    <img src="img/player-list.gif" alt="" height="15" style="position: absolute;top:0px;left: -7px;display:none;" class="js_samllimg">
+                                    <div class="player_song_title music_info">
+                                        <h3>${lrcsongArr[i].name}</h3>
+                                        <p>${lrcsongArr[i].autor}</p>
+                                    </div>
+                                    <div class="player_song_iconfont music_info js_songtools" id="playericon" style="display:none;">
+                                        <a href="javascript:;" class="tuzi1 js_stop" id="test_d" style="font-size: 15px !important; top:10px;"><i class="iconfont icon-xinzanting1"></i></a> 
+                                        <a href="javascript:;" class="js_lover loverfooter"  id="lover" data-id="${lrcsongArr[i].id}"> <i class="iconfont icon-aixinkong1"></i></a>
+                                    </div>
+                                    <div class="player_song_time music_info js_lrctime">
+                                        <span>${lrcsongArr[i].time}</span>
+                                    </div>    
+                                </div>
+                            </li>
+                            `
+                        }
+                        $(".js_bofanglist").html(lrchtml);
+                    },2000)
+                }, 
+                //歌词解析
+                lrc(index){
+                    var $this = this;
+                    if($this.songArr[index].key){
+                        console.log($this.songArr[index].key)
+                        var arraysNew = $this.songArr[index].key.split("[");
+                        var len = arraysNew.length;
+                        var contentLrc = [];
+                        var lrcHtml = "";
+                        for(var i=0;i<len;i++) {
+                            var temp = arraysNew[i];
+                            //根据分号分割过滤数据(replace() 方法用于在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的子串。)
+                            var tempNum = temp.split("]")[0].split(".")[0];
+                            var time = parseInt(tempNum.split(":")[0])*60 + parseInt(tempNum.split(":")[1]);
+                            var tempWord = temp.split("]")[1];
+                            if(tempWord==null){
+                                tempWord = " "
+                            }
+                            lrcHtml += `<p data-time="${time}">${tempWord}</p>`
+                        };
+                        $(".js_lrc").html(lrcHtml)
+                        $this.songLrcContent.push(contentLrc);
+                    }else{
+                        $(".js_lrc").html("暂无歌词");
+                    }
+                },
+                //高亮显示
+                timeInit(){
+                    var $setThis = this;
+                    playerMusic.percent(function(){
+                        $(".js_pre").css({
+                            width:  this.per + "%"
+                        });
+                        $(".js_prevalue").css({
+                            left:  this.per + "%"
+                        })
+                        if(timeMark){
+                            $(".timestar").html(this.durationtest);	
+                            $(".timeend").html(this.stime) ;
+                        }
+                        var newStime = parseInt(this.stime.split(":")[0])*60 + parseInt(this.stime.split(":")[1])
+                        $(".js_lrc").find("p").each(function(index,dom){
+                            if(newStime >= $(".js_lrc").find("p").eq(index).data("time")&&newStime < $(".js_lrc").find("p").eq(index+1).data("time")){
+                                $(".js_lrc").find("p").eq(index).addClass("blingbling");
+                                //滚筒条联动 歌词联动
+                                if($(dom).get(0).offsetTop>$(".js_lrc").height()/2){
+                                    $(".js_lrc").animate({scrollTop:$(dom).get(0).offsetTop - $(".js_lrc").height()/4},250);
+                                }
+                                //
+                            }else{
+                                $(".js_lrc").find("p").eq(index).removeClass("blingbling")
+                            }
+                        })
+                    })
+                },
+            //播放功能块
+                //上一首切换
+                prPrev(){
+                    var $this = this;
+                    $(".icon-youbofang-copy-copy").click(function(){
+                        playerMusic.nextIndex("pre");
+                        $('.js_songli').eq(i).find(".js_stop i").removeClass("icon-xinzanting1").addClass("icon-xinzanting");
+                    })
+                },
+                //下一首切换
+                next(){
+                    $(".icon-youbofang").click(function(){
+                        playerMusic.nextIndex("next");
+                       
+                    })
+                },
+                //底部播放联动列表播放暂停
+                //暂停播放切换
+                togglePlay(){
+                    //暂停播放  
+                    var flag = true;
+                    var $this = this;
+                    $(".js_songlistheader").on("click",".js_stop",function(e){
+                        var indexLi = $(this).closest(".js_songli").data("index");
+                        var indexNum = $(".js_footestop").data("index")
+                        $(".js_footestop").data("index",indexLi);
+                        if(indexLi == indexNum){
+                            if($(this).find("i").hasClass("icon-xinzanting1")){
+                                $(".js_footestop").trigger("click");
+                            }else{
+                                $(".js_footestop").trigger("click");
+                            }
+                        }else{
+                            playerMusic.player(indexLi);
+                            $(".js_footestop").trigger("click");
+                        }
+                        //喜欢
+                        if($(this).parent().parent().find(".js_lover i").hasClass("icon-aixin1")){
+                            $(".js_loverfoot").find("i").removeClass("icon-aixinkong1").addClass("icon-aixin1").css("color","rgba(247, 59, 59, 0.8)")
+                        }else{
+                            $(".js_loverfoot").find("i").removeClass("icon-aixin1").addClass("icon-aixinkong1").css("color","#c3c3c3")
+                        };
+                    }) ;
+                    
+                },
+                //播放暂停
+                stopPlay(){
+                    var $this = this;
+                    $(".js_footestop").on("click",function(e){
+                        var indexNum = $(this).data("index")
+                        $this.initFootPlayer(indexNum)
+                        if($(this).find("i").hasClass("icon-xinzanting1") || $(".js_songlismall").eq(indexNum).find(".js_stop i").hasClass("icon-xinzanting1")){
+                            $this.changeIcon(indexNum,"play");
+                            playerMusic.play();
+                        }else{
+                            $this.changeIcon(indexNum,"stop");
+                            playerMusic.stop();
+                        }
+                    });
+                    $(".js_lrcstop").on("click",function(){
+                        $(".js_footestop").trigger("click");
+                    })
+                },
+                //双击播放
+                doublePlayer(){
+                    var $this = this;
+                    $(".js_songlistheader").on("dblclick",".js_songli",function(){
+                        var textSongname = $(this).find(".js_listname").text();
+                        var textSonger = $(this).find(".js_autor").text();
+                        var idNum = $(this).find(".js_lover").data("id");
+                        console.log($(this).data("index"))
+                        $(".js_footestop").data("index",$(this).data("index"));
+                        playerMusic.player($(this).data("index"));
+                        // $(this).find(".js_stop i").removeClass("icon-xinzanting1").addClass("icon-xinzanting");
+                        // $(".js_footestop i").removeClass("icon-xinzanting1").addClass("icon-xinzanting");
+                        // $(".js_songname").text(textSongname);
+                        // $(".js_songsonger").text(textSonger);
+                        $(".js_footestop").trigger("click");
+                        if($(this).parent().parent().find(".js_lover i").hasClass("icon-aixin1")){
+                            $(".js_loverfoot").find("i").removeClass("icon-aixinkong1").addClass("icon-aixin1").css("color","rgba(247, 59, 59, 0.8)")
+                        }else{
+                            $(".js_loverfoot").find("i").removeClass("icon-aixin1").addClass("icon-aixinkong1").css("color","#c3c3c3")
+                        
+                        };
+                    })
+                    $(".js_songlistheader").on("dblclick",".js_xiangxixi",function(e){
+                        e.stopPropagation();
+                    })
+                },               
+                changeIcon(index,state){
+                    if(state == "stop"){
+                        console.log(index)
+                        $(".js_footestop i").removeClass("icon-xinzanting").addClass("icon-xinzanting1");
+                        $(".js_lrcstop i").removeClass("icon-xinzanting").addClass("icon-xinzanting1");
+                        $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_stop i").removeClass("icon-xinzanting").addClass("icon-xinzanting1");
+                        $(".js_songli").find(".js_samllimg").hide();
+                        $(".js_songli").find(".js_samllimgstop").hide();
+                        $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_samllimgstop").show();
+                    };
+                    if(state == "play"){
+                        console.log(index)
+                        $(".js_footestop i").removeClass("icon-xinzanting1").addClass("icon-xinzanting");
+                        $(".js_lrcstop i").removeClass("icon-xinzanting1").addClass("icon-xinzanting");
+                        $('.js_songli').find(".js_stop i").removeClass("icon-xinzanting").addClass("icon-xinzanting1");
+                        $('.js_songlismall').find(".js_stop i").removeClass("icon-xinzanting").addClass("icon-xinzanting1");
+                        $(".js_songli").removeClass("newactive")
+                        $(".js_songli").find(".js_samllimg").hide();
+                        $(".js_songli").find(".js_samllimgstop").hide();
+                        console.log($(".js_songlistheader").find(`.js_songli[data-index=${index}]`))
+                        $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_samllimg").show();
+                        $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).addClass("newactive")
+                        $(".js_songlistheader").find(`.js_songli[data-index=${index}]`).find(".js_stop i").removeClass("icon-xinzanting1").addClass("icon-xinzanting");
+                    }
+
+                }
+            };
+            ajaxInfo.init();
+        });
+        
+        
+        
+    </script>
+    
+	<!-- 应用自定义js -->
+	<script type="text/javascript" src="js/custom/selectajax.js"></script>
+
+</body>
+</html>
